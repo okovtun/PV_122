@@ -1,5 +1,8 @@
 ﻿#include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 class Point
 {
@@ -48,15 +51,16 @@ public:
 	}
 
 	//				Operators:
-	void operator=(const Point& other)
+	Point& operator=(const Point& other)
 	{
 		this->x = other.x;
 		this->y = other.y;
 		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
 	}
 
 	//				Methods:
-	double distance(Point other)
+	double distance(const Point& other)
 	{
 		/*double x_distance = this->x - other.x;
 		double y_distance = this->y - other.y;
@@ -72,7 +76,7 @@ public:
 	}
 };
 
-double distance(Point A, Point B)
+double distance(const Point& A, const Point& B)
 {
 	double x_distance = A.get_x() - B.get_x();
 	double y_distance = A.get_y() - B.get_y();
@@ -80,8 +84,11 @@ double distance(Point A, Point B)
 	return distance;
 }
 
+#define delimiter "\n---------------------------------------------------------\n"
 //#define STRUCT_POINT
 //#define DISTANCE
+//#define CONSTRUCTORS_CHECK
+//#define ASSIGNMENT_CHECK
 
 void main()
 {
@@ -115,24 +122,53 @@ void main()
 	B.set_y(4);
 	cout << B.get_x() << "\t" << B.get_y() << endl;
 	cout << "Размер объекта: " << sizeof(B) << endl;
+	cout << delimiter << endl;
 	cout << "Расстояние от точки A до точки B: " << A.distance(B) << endl;
+	cout << delimiter << endl;
 	cout << "Расстояние от точки B до точки A: " << B.distance(A) << endl;
+	cout << delimiter << endl;
 	cout << "Расстояние между точками A и B:   " << distance(A, B) << endl;
+	cout << delimiter << endl;
 	cout << "Расстояние между точками B и A:   " << distance(B, A) << endl;
+	cout << delimiter << endl;
 #endif // DISTANCE
 
+#ifdef CONSTRUCTORS_CHECK
 	Point A;	//Default constructor
 	A.print();
-	
+
 	Point B(2, 3);
 	B.print();
 
 	Point C = B;//Copy constructor
 	C.print();
 
-	Point D;
+	Point D;	//Default constructor
 	D = B;		//Copy assignment - оператор присваивания
 	D.print();
+#endif // CONSTRUCTORS_CHECK
+
+#ifdef ASSIGNMENT_CHECK
+	int a, b, c;
+	a = b = c = 0;
+	cout << a << "\t" << b << "\t" << c << endl;
+
+	Point A, B, C;
+	cout << delimiter << endl;
+	A = B = C = Point(2, 3);	
+	//Point(2,3) - явный вызов конструктора. 
+	//Таким образом создается временный безымянный объект,
+	//который существует только в пределах выражения,
+	//и удаляется после завершения выражения.
+	cout << delimiter << endl;
+	A.print();
+	B.print();
+	C.print();
+#endif
+
+	Point A(2, 3);
+	Point B(3, 4);
+	Point C = A + B;
 }
 
 /*
@@ -148,5 +184,26 @@ Constructor - это метод, который создает объект.
 ~Destructor - это метод, который удаляет объект по истечении его времени жизни.
 
 Default constructor
+----------------------------------------------------
+*/
+
+/*
+----------------------------------------------------
+			OPERATORS OVERLOADING RULES
+1. Перегрузить можно только существующие операторы;
+	+  - перегружается;
+	++ - перегружается;
+	*  - перегружается;
+	** - НЕ перегружается;
+2. НЕ все существующие операторы можно перегрузить.
+   НЕ перегружаются:
+	?: - Ternary;
+	:: - Scope operator (Оператор разрешения видимости)
+	.  - Point operator;
+	.* - Pointer to member selection;
+	#
+	##
+3. Перегруженные операторы сохраняют приоритет;
+4. Переопределить поведение операторов со встроенными типами невозможно;
 ----------------------------------------------------
 */

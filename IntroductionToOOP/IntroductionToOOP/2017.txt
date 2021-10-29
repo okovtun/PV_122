@@ -1,0 +1,33 @@
+/JMC 
+/permissive- 
+/GS 
+/analyze- 
+/W3 
+/Zc:wchar_t 
+/I"C:\Program Files (x86)\Visual Leak Detector\include" 
+/ZI 
+/Gm- 
+/Od 
+/sdl 
+/Fd"Debug\vc141.pdb" 
+/Zc:inline 
+/fp:precise 
+/D "WIN32" 
+/D "_DEBUG" 
+/D "_CONSOLE" 
+/D "_UNICODE" 
+/D "UNICODE" 
+/errorReport:prompt 
+/WX- 
+/Zc:forScope 
+/RTC1 
+/Gd 
+/Oy- 
+/MDd 
+/FC 
+/Fa"Debug\" 
+/EHsc 
+/nologo 
+/Fo"Debug\" 
+/Fp"Debug\IntroductionToOOP.pch" 
+/diagnostics:classic 

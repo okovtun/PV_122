@@ -2,6 +2,20 @@ https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
 TODO:
+1. В классе Fraction написать конструктор с одним параметром типа double,
+   который будет преобразовывать десятичные дроби в обычные дроби:
+   Fraction A = 2.75;
+   cout << A << endl;	//	2(3/4)
+
+2. В отдельном проекте реализовать класс String, описывающий строку.
+   Должна быть возможность создавать объекты следующим образом:
+	String str;		//Создается пустая строка размером 80 Byte
+	String str1 = "Hello";
+	String str2 = "World";
+	String str3 = str1 + str2;	//Конкатенация строк
+	cout << str3 << endl;	//HelloWorld
+
+DONE:
 В классе Fraction реализовать:
 1. Оператор перенправления в поток:				DONE
 	Fraction A(2, 3);

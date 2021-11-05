@@ -1,4 +1,6 @@
 ﻿//Fraction - описываем простую дробь
+#pragma warning (disable:4326)
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 using std::cin;
@@ -49,7 +51,7 @@ public:
 		this->denominator = 1;
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		//Single-argument constructor - Конструктор с одним параметром.
 		this->integer = integer;
@@ -114,6 +116,16 @@ public:
 		to_proper();
 		integer++;
 		return old;
+	}
+
+	//				Type-cast operators:
+	explicit operator int()const
+	{
+		return integer;
+	}
+	explicit operator double()const
+	{
+		return integer + (double)numerator / denominator;
 	}
 
 	//				Methods:
@@ -308,6 +320,9 @@ istream& operator>>(istream& is, Fraction& obj)
 //#define OSTREAM_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define COMPARISON_OPERATORS
+//#define ISTREAM_OPERATOR_CHECK
+//#define TYPE_CONVERSION_BASICS
+//#define CONVERSION_FROM_OTHER_TO_CLASS
 
 void main()
 {
@@ -367,8 +382,57 @@ void main()
 	cout << (A < B) << endl;
 #endif // COMPARISON_OPERATORS
 
+#ifdef ISTREAM_OPERATOR_CHECK
 	Fraction A;
 	cout << "Введите дробь: ";
 	cin >> A;
 	cout << A << endl;
+#endif // ISTREAM_OPERATOR_CHECK
+
+#ifdef TYPE_CONVERSION_BASICS
+	int a = 2;		//No conversions
+	double b = 3;	//Conversion from int to double.
+					//			 from less to more.
+
+	int c = b;		//Conversion from double to int
+					//			 from more to less without data loss
+
+	int d = 4.5;	//Conversion from double to int
+					//			 from more to less with data loss
+	cout << d << endl;
+#endif // TYPE_CONVERSION_BASICS
+
+#ifdef CONVERSION_FROM_OTHER_TO_CLASS
+	double a = 2;	//From int to double	(from less to more)
+	Fraction A = (Fraction)5;	//From int to Fraction	(from less to more)
+	cout << A << endl;
+	cout << "\n----------------------------------------\n";
+	Fraction B;			//Default constructor
+	cout << "\n----------------------------------------\n";
+	B = Fraction(8);	//Conversion from int to Fraction
+	cout << "\n----------------------------------------\n";
+	cout << B << endl;
+
+	Fraction C(12);	//explicit конструктор можно вызвать так, и нельзя вызвать так: Fraction C = 12;
+	cout << C << endl;
+#endif // CONVERSION_FROM_OTHER_TO_CLASS
+
+	//Type-cast operators
+	/*
+	----------------------------
+	operator type()
+	{
+		//conversion is here:
+		......
+		return ...;
+	}
+	----------------------------
+	*/
+
+	Fraction A(2, 3, 4);
+	int a = (int)A;
+	cout << A << endl;
+	cout << a << endl;
+	double b = (double)A;
+	cout << b << endl;
 }

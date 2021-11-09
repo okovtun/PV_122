@@ -9,7 +9,7 @@ TODO:
    cout << A << endl;	//	2(3/4)			DONE
 
 2. Проверочный код в проекте String должен заработать:
-	
+	https://github.com/okovtun/PV_122/blob/1d606dcef2d3442cf27017ab1028c6360a17bc65/IntroductionToOOP/String/main.cpp#L88
 
 3. В отдельном проекте реализовать класс String, описывающий строку.
    Должна быть возможность создавать объекты следующим образом:

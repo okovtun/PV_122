@@ -59,6 +59,17 @@ public:
 		this->denominator = 1;
 		cout << "SingleArgConstructor:" << this << endl;
 	}
+	Fraction(double decimal)
+	{
+		decimal += 1e-11;
+		integer = decimal;	//Сохраняем целую часть десятичной дроби.
+		decimal -= integer;	//Убираем целую часть из десятиной дроби.
+		denominator = 1e+9;	//1 * 10 в девятой степени
+		numerator = decimal * denominator;//Умножаем дробную часть десятичной дроби на 1 000 000 000,
+		//и таким образом вся дробная часть переходит в целую часть. И сохраняем ее в числителе.
+		reduce();
+		cout << "doubleConstructor:\t" << this << endl;
+	}
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
@@ -155,6 +166,11 @@ public:
 	{
 		//Сокращает дробь:
 		//https://www.webmath.ru/poleznoe/formules_12_7.php
+		if (numerator == 0)
+		{
+			denominator = 1;
+			return *this;
+		}
 		int more;	//Большее значение
 		int less;	//Меньшее значение
 		int rest;	//Остаток от деления
@@ -304,7 +320,7 @@ istream& operator>>(istream& is, Fraction& obj)
 	case 1: obj.set_integer(atoi(value[0])); break;
 		//http://cplusplus.com/reference/cstdlib/
 		//http://cplusplus.com/reference/cstdlib/atoi/
-	case 2: 
+	case 2:
 		obj.set_numerator(atoi(value[0]));
 		obj.set_denominator(atoi(value[1]));
 		break;
@@ -323,6 +339,7 @@ istream& operator>>(istream& is, Fraction& obj)
 //#define ISTREAM_OPERATOR_CHECK
 //#define TYPE_CONVERSION_BASICS
 //#define CONVERSION_FROM_OTHER_TO_CLASS
+//#define CONVERSION_FROM_CLASS_TO_OTHER
 
 void main()
 {
@@ -417,17 +434,18 @@ void main()
 	cout << C << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
 
+#ifdef CONVERSION_FROM_CLASS_TO_OTHER
 	//Type-cast operators
-	/*
-	----------------------------
-	operator type()
-	{
-		//conversion is here:
-		......
-		return ...;
-	}
-	----------------------------
-	*/
+/*
+----------------------------
+operator type()
+{
+	//conversion is here:
+	......
+	return ...;
+}
+----------------------------
+*/
 
 	Fraction A(2, 3, 4);
 	int a = (int)A;
@@ -435,4 +453,14 @@ void main()
 	cout << a << endl;
 	double b = (double)A;
 	cout << b << endl;
+#endif // CONVERSION_FROM_CLASS_TO_OTHER
+
+	Fraction A = 2.76;
+	cout << A.reduce() << endl;
+	Fraction B(2, 76, 100);
+	cout << B << endl;
+	cout << (A == B) << endl;
+
+	Fraction C(1, 3);
+	cout << C*3 << endl;
 }

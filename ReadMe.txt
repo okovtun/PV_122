@@ -1,14 +1,17 @@
 https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
-TODO:
+TOREAD:
+http://cplusplus.com/doc/tutorial/classes2/
+
+DONE:
 1. ¬ классе Fraction написать конструктор с одним параметром типа double,
    который будет преобразовывать дес€тичные дроби в обычные дроби:
    Fraction A = 2.75;
 				(double)
    cout << A << endl;	//	2(3/4)			DONE
 
-2. ѕроверочный код в проекте String должен заработать:
+2. ѕроверочный код в проекте String должен заработать:	DONE
 	https://github.com/okovtun/PV_122/blob/1d606dcef2d3442cf27017ab1028c6360a17bc65/IntroductionToOOP/String/main.cpp#L88
 
 3. ¬ отдельном проекте реализовать класс String, описывающий строку.

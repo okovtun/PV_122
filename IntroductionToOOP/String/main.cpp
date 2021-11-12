@@ -34,19 +34,17 @@ public:
 	{
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char* str) :size(strlen(str) + 1), str(new char[size] {})
+	String(const char* str) :String(strlen(str) + 1)//Делегируем выделение памяти конструктору по умолчанию
 	{
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		cout << "Constructor:\t\t" << this << endl;
 	}
 	//			The rule of three
-	String(const String& other) :size(other.size), str(new char[size] {})
+	String(const String& other) :String(other.str)
 	{
-		//Deep copy
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << this << endl;
 	}
-	String(String&& other):size(other.size), str(other.str)
+	String(String&& other) :size(other.size), str(other.str)
 	{
 		//Shallow copy - Поверхностое копирование
 		//Конструктор переноса должен работать так,

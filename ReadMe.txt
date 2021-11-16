@@ -1,6 +1,20 @@
 https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
+TODO:
+В проекте Academy реализовать классы Teacher и Graduate(Дипломник), 
+и написать проверочный код для них.
+
+DONE:
+1. В класс Matrix добавить Move методы и арифметические операторы: +, -, *;
+2. Реализовать класс Binary описывающий двоичное число.
+   Обеспечить арифметические и побитовые операции над двоичными числами
+   Арифметические:	+, -, *, /;
+   Побитовые:		~ - NOT;
+					| -  OR;
+					& - AND;
+   А так же операции сравнения: ==, !=, >, <, >=, <=;
+
 TOREAD:
 http://cplusplus.com/doc/tutorial/classes2/
 

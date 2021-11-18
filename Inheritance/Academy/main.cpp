@@ -156,6 +156,7 @@ public:
 class Graduate :public Student
 {
 	string subject;
+	Teacher* diploma_manager;	//Ассоциация
 public:
 	const string& get_subject()const
 	{
@@ -169,10 +170,11 @@ public:
 	(
 		const string& last_name, const string& first_name, unsigned int age,
 		const string& speciality, const string& group, double rating,
-		const string& subject
+		const string& subject,Teacher* diploma_manager
 	) :Student(last_name, first_name, age, speciality, group, rating)
 	{
 		set_subject(subject);
+		this->diploma_manager = diploma_manager;
 		cout << "GConstructor:\t" << endl;
 	}
 	~Graduate()
@@ -184,6 +186,8 @@ public:
 	{
 		Student::print();
 		cout << "Тема диплома: " << subject << endl;
+		cout << "Руководитель дипломного проекта:\n";
+		diploma_manager->print();
 	}
 };
 
@@ -201,6 +205,6 @@ void main()
 
 	Graduate g("Schrader", "Hank", 42,
 		"Cryminalistic", "OBN", 95,
-		"How to catch Heisenberg");
+		"How to catch Heisenberg", &t);
 	g.print();
 }

@@ -108,6 +108,85 @@ public:
 	}
 };
 
+class Teacher :public Human
+{
+	string speciality;
+	unsigned int experience;
+public:
+	const string& get_speciality()const
+	{
+		return speciality;
+	}
+	unsigned int get_experience()const
+	{
+		return experience;
+	}
+	void set_speciality(const string& speciality)
+	{
+		this->speciality = speciality;
+	}
+	void set_experience(unsigned int experience)
+	{
+		this->experience = experience;
+	}
+	//					Constructors:
+	Teacher
+	(
+		const string& last_name, const string& first_name, unsigned int age,
+		const string& speciality, unsigned int experience
+	) :Human(last_name, first_name, age)
+	{
+		set_speciality(speciality);
+		set_experience(experience);
+		cout << "TConstructor:\t" << this << endl;
+	}
+	~Teacher()
+	{
+		cout << "TDestructor:\t" << this << endl;
+	}
+
+	void print()const
+	{
+		Human::print();
+		cout << "специальность: " << speciality
+			<< ", опыт преподавани€: " << experience << " лет." << endl;;
+	}
+};
+
+class Graduate :public Student
+{
+	string subject;
+public:
+	const string& get_subject()const
+	{
+		return subject;
+	}
+	void set_subject(const string& subject)
+	{
+		this->subject = subject;
+	}
+	Graduate
+	(
+		const string& last_name, const string& first_name, unsigned int age,
+		const string& speciality, const string& group, double rating,
+		const string& subject
+	) :Student(last_name, first_name, age, speciality, group, rating)
+	{
+		set_subject(subject);
+		cout << "GConstructor:\t" << endl;
+	}
+	~Graduate()
+	{
+		cout << "GDestructor:\t" << endl;
+	}
+
+	void print()const
+	{
+		Student::print();
+		cout << "“ема диплома: " << subject << endl;
+	}
+};
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -116,4 +195,12 @@ void main()
 
 	Student s("Pinkman", "Jessie", 22, "Chemistry", "WW_01", 93);
 	s.print();
+
+	Teacher t("White", "Walter", 50, "Chemistry", 25);
+	t.print();
+
+	Graduate g("Schrader", "Hank", 42,
+		"Cryminalistic", "OBN", 95,
+		"How to catch Heisenberg");
+	g.print();
 }

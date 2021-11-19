@@ -2,6 +2,11 @@ https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
 TODO:
+http://cplusplus.com/doc/tutorial/inheritance/
+http://cplusplus.com/doc/tutorial/polymorphism/
+https://drive.google.com/drive/folders/1mIhAKMp5-Jpy6s5X8u924tRCXFEdHE_z?usp=sharing
+
+DONE:
 В проекте Academy реализовать классы Teacher и Graduate(Дипломник), 
 и написать проверочный код для них.
 

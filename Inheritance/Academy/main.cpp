@@ -4,6 +4,7 @@ using namespace std;
 
 class Human
 {
+protected:
 	string last_name;
 	string first_name;
 	unsigned int age;
@@ -40,7 +41,7 @@ public:
 		set_age(age);
 		cout << "HConstructor:\t" << this << endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
@@ -177,13 +178,14 @@ public:
 	}
 	~Graduate()
 	{
-		cout << "GDestructor:\t" << endl;
+		cout << "GDestructor:\t" << this << endl;
 	}
 
 	void print()const
 	{
 		Student::print();
 		cout << "Тема диплома: " << subject << endl;
+		this->last_name;
 	}
 };
 
@@ -228,6 +230,12 @@ void main()
 		group[i]->print();
 	}
 	cout << "\n----------------------------------------\n";
+
+	for (int i = 0; i < sizeof(group)/sizeof(Human*); i++)
+	{
+		delete[] group[i];
+	}
+	//cout << sizeof(group)/sizeof(Human*) << endl;
 }
 
 /*

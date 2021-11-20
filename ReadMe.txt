@@ -2,6 +2,11 @@ https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
 TODO:
+1. В ветке AcademySeparation Все классы с проекте Academy вынести в отдельные файлы;
+2.* В проекте Academy сохранить массив group в файл;
+3.** В проекте Academy загрузить массив group из файла;
+
+TODO:
 http://cplusplus.com/doc/tutorial/inheritance/
 http://cplusplus.com/doc/tutorial/polymorphism/
 https://drive.google.com/drive/folders/1mIhAKMp5-Jpy6s5X8u924tRCXFEdHE_z?usp=sharing

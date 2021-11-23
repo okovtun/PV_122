@@ -1,7 +1,10 @@
 //Polymorphic streams DONE.
 #include<iostream>
+#include<fstream>
 #include<string>
 using namespace std;
+
+#define tab "\t"
 
 class Human
 {
@@ -49,7 +52,7 @@ public:
 	//				Methods:
 	virtual ostream& print(ostream& os)const
 	{
-		return os << last_name << " " << first_name << " " << age << " лет";
+		return os << last_name << " " << first_name << " " << age;
 	}
 };
 ostream& operator<<(ostream& os, const Human& obj)
@@ -108,9 +111,10 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		return os << ", Специальность: " << speciality
-			<< ", группа: " << group
-			<< ", успеваемость: " << rating;
+		os << tab;
+		return os /*<< ", Специальность: "*/ << speciality << tab
+			/*<< ", группа: "*/ << group
+			/*<< ", успеваемость: " */ << rating;
 	}
 };
 
@@ -154,8 +158,9 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		return os << "специальность: " << speciality
-			<< ", опыт преподавания: " << experience << " лет.";
+		os << tab;
+		return os /*<< "специальность: "*/ << speciality
+			/*<< ", опыт преподавания: "*/ << experience << " лет.";
 	}
 };
 
@@ -189,7 +194,7 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Student::print(os);
-		return os << "Тема диплома: " << subject << endl;
+		return os /*<< "Тема диплома: "*/ << tab << subject << endl;
 	}
 };
 
@@ -236,7 +241,15 @@ void main()
 	}
 	cout << "\n----------------------------------------\n";
 
-	for (int i = 0; i < sizeof(group)/sizeof(Human*); i++)
+	ofstream fout("group.txt");
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		fout << *group[i] << endl;
+	}
+	fout.close();
+	system("notepad group.txt");
+
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		delete[] group[i];
 	}

@@ -1,0 +1,6 @@
+Pinkman 	Jessie 	22	Chemistry		WW_0193
+Vercetti 	Tomas 	30	Cryminal		Vice90
+White 		Walter	50	Chemistry		25 лет.
+Diaz 		Ricardo 55	Weapons distribution	Vice80
+Schrader 	Hank 	42	Cryminalistic		OBN95	How to catch Heisenberg
+Eistein 	Albert 143	Astronomy		120 лет.

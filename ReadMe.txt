@@ -2,6 +2,12 @@ https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
 TODO:
+1. Выровнять вывод группы в консоль в виде таблицы;
+	cout.width(10)
+2. Перегрузить оператор ввода для всех классов в проекте Academy, 
+   и написать прверочный код для них;
+
+DONE:
 1. В ветке AcademySeparation Все классы с проекте Academy вынести в отдельные файлы;
 2.* В проекте Academy сохранить массив group в файл;
 3.** В проекте Academy загрузить массив group из файла;

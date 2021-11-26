@@ -2,6 +2,9 @@ https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
 TODO:
+Загрузить группу из файла.
+
+DONE:
 1. Выровнять вывод группы в консоль в виде таблицы;
 	cout.width(10)
 2. Перегрузить оператор ввода для всех классов в проекте Academy, 

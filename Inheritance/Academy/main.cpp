@@ -1,4 +1,4 @@
-//Polymorphic streams DONE.
+﻿//Polymorphic streams DONE.
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -52,12 +52,51 @@ public:
 	//				Methods:
 	virtual ostream& print(ostream& os)const
 	{
-		return os << last_name << " " << first_name << " " << age;
+		//return os << last_name << " " << first_name << " " << age;
+		os.width(10);	//Задает ширину поля, в которое будет выводиться следующее значение
+		os << std::left;
+		os << last_name;
+		os.width(10);
+		os << std::left;
+		os << first_name;
+		os.width(5);
+		os << age;
+		return os;
+	}
+	virtual ofstream& print(ofstream& os)const
+	{
+		os.width(15);
+		os << left;
+		os << typeid(*this).name() << " | ";
+		//return os << last_name << " " << first_name << " " << age;
+		os.width(10);	//Задает ширину поля, в которое будет выводиться следующее значение
+		os << std::left;
+		os << last_name << "|";
+		os.width(10);
+		os << std::left;
+		os << first_name << "|";
+		os.width(5);
+		os << age << "|";
+		return os;
+	}
+
+	virtual istream& input(istream& is)
+	{
+		return is >> last_name >> first_name >> age;
 	}
 };
 ostream& operator<<(ostream& os, const Human& obj)
 {
 	return obj.print(os);
+}
+ofstream& operator<<(ofstream& os, const Human& obj)
+{
+	return obj.print(os);
+}
+
+istream& operator>>(istream& is, Human& obj)
+{
+	return obj.input(is);
 }
 
 class Student :public Human
@@ -95,7 +134,7 @@ public:
 	(
 		const string& last_name, const string& first_name, unsigned int age,
 		const string& speciality, const string& group, double rating
-	) :Human(last_name, first_name, age)	//���������� ����������� �������� ������
+	) :Human(last_name, first_name, age)	//Делегируем конструктор базового класса
 	{
 		set_speciality(speciality);
 		set_group(group);
@@ -111,10 +150,55 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		os << tab;
-		return os /*<< ", �������������: "*/ << speciality << tab
-			/*<< ", ������: "*/ << group
-			/*<< ", ������������: " */ << rating;
+		//os << tab;
+		//return os /*<< ", Специальность: "*/ << speciality << tab
+		//	/*<< ", группа: "*/ << group
+		//	/*<< ", успеваемость: " */ << rating;
+		os.width(25);
+		os << left;
+		os << speciality;
+
+		os.width(8);
+		os << left;
+		os << group;
+
+		os.width(5);
+		//os << right;
+		os << internal;
+		os << rating;
+		os << "%";
+		return os;
+	}
+	ofstream& print(ofstream& os)const
+	{
+		Human::print(os);
+		//os << tab;
+		//return os /*<< ", Специальность: "*/ << speciality << tab
+		//	/*<< ", группа: "*/ << group
+		//	/*<< ", успеваемость: " */ << rating;
+		os.width(25);
+		os << left;
+		os << speciality << "|";
+
+		os.width(8);
+		os << left;
+		os << group << "|";
+
+		os.width(5);
+		//os << right;
+		os << internal;
+		os << rating;
+		os << "% |";
+		return os;
+	}
+
+	istream& input(istream& is)
+	{
+		Human::input(is);
+		is >> speciality;
+		is >> group;
+		is >> rating;
+		return is;
 	}
 };
 
@@ -158,10 +242,30 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Human::print(os);
-		os << tab;
-		return os /*<< "�������������: "*/ << speciality
-			/*<< ", ���� ������������: "*/ << experience << " ���.";
+		//os << tab;
+		//return os /*<< "специальность: "*/ << speciality
+		//	/*<< ", опыт преподавания: "*/ << experience << " лет.";
+		os.width(33);
+		os << speciality;
+		os.width(5);
+		os << right;
+		os << experience << "y";
+		return os;
 	}
+	ofstream& print(ofstream& os)const
+	{
+		Human::print(os);
+		//os << tab;
+		//return os /*<< "специальность: "*/ << speciality
+		//	/*<< ", опыт преподавания: "*/ << experience << " лет.";
+		os.width(33);
+		os << speciality << " | ";
+		os.width(5);
+		os << right;
+		os << experience << "y|";
+		return os;
+	}
+
 };
 
 class Graduate :public Student
@@ -194,11 +298,24 @@ public:
 	ostream& print(ostream& os)const
 	{
 		Student::print(os);
-		return os /*<< "���� �������: "*/ << tab << subject << endl;
+		//return os /*<< "Тема диплома: "*/ << tab << subject << endl;
+		return os << left << " " << subject;
 	}
+	ofstream& print(ofstream& os)const
+	{
+		Student::print(os);
+		//return os /*<< "Тема диплома: "*/ << tab << subject << endl;
+		os << left << " " << subject;
+		return os;
+	}
+
 };
 
+void SaveToFile(const Human* group[], const int size, const string& filename);
+Human** LoadFromFile(const std::string& filename);
+
 //#define INHERITANCE
+//#define OUTPUT_CHECK
 
 void main()
 {
@@ -220,11 +337,12 @@ void main()
 	g.print();
 #endif // INHERITANCE
 
+#ifdef OUTPUT_CHECK
 	//Generalisation:
-	Human* group[] =
+	const Human* group[] =
 	{
-		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_01", 93),//upcast
-		new Student("Vercetti", "Tomas", 30, "Cryminal", "Vice", 90),//upcast
+		new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_01", 5),//upcast
+		new Student("Vercetti", "Tomas", 30, "Cryminal", "Vice", 100),//upcast
 		new Teacher("White", "Walter", 50, "Chemistry", 25),//upcast
 		new Student("Diaz", "Ricardo", 55, "Weapons distribution", "Vice", 80),
 		new Graduate("Schrader", "Hank", 42,
@@ -232,7 +350,7 @@ void main()
 		new Teacher("Eistein", "Albert", 143, "Astronomy", 120)
 	};
 
-	//Specialisation - ���������, �������������
+	//Specialisation - уточнение, конкретизацию
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		cout << "\n----------------------------------------\n";
@@ -241,27 +359,92 @@ void main()
 	}
 	cout << "\n----------------------------------------\n";
 
-	ofstream fout("group.txt");
+	/*ofstream fout("group.txt");
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		fout << *group[i] << endl;
 	}
 	fout.close();
-	system("notepad group.txt");
+	system("notepad group.txt");*/
+	string filename = "group.txt";
+	SaveToFile(group, sizeof(group) / sizeof(group[0]), "group.txt");
+	system((string("notepad ") + filename).c_str());
+	//string("notepad ") - преобразуем стрококвую константу "notepad " в объект класса std::string
+	//string("notepad ") + filename - выполняем конкатенацию двух объектов класса std::string
+	//(std::string).c_str() - метод c_str() возвращает содержимое объекта std::string 
+	//в виде обычной NULL Terminated line (C-string), т.е., в виде массива элементов char.
 
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		delete[] group[i];
 	}
-	//cout << sizeof(group)/sizeof(Human*) << endl;
+	//cout << sizeof(group)/sizeof(Human*) << endl;  
+#endif // OUTPUT_CHECK
+
+	/*Human human("last_name", "first_name", 0);
+	cout << "Кто к нам пришел: ";
+	cin >> human;
+	cout << human << endl;*/
+
+	/*Student stud("", "", 0, "", "", 0);
+	cout << "Кто к нам пришел: ";
+	cin >> stud;
+	cout << stud << endl;*/
+
+	LoadFromFile("group.txt");
 }
 
 /*
 ---------------------------------------------------------
 					Polymorphism
-(inclusion polymorphism) - ��� ����������� ��������
-����� ���� �� �������, � ����������� �� ����, ��� ��� ��������.
+(inclusion polymorphism) - это способность объектов
+вести себя по разному, в зависимости от того, кем они являются.
 //Generalisation
-//upcast (�������������� �����)
+//upcast (преобразование вверх)
 ---------------------------------------------------------
 */
+
+void SaveToFile(const Human* group[], const int size, const string& filename)
+{
+	ofstream fout(filename);
+	for (int i = 0; i < size; i++)
+	{
+		fout << *group[i] << endl;
+	}
+	fout.close();
+
+}
+Human** LoadFromFile(const std::string& filename)
+{
+	ifstream fin(filename);
+	if (fin.is_open())
+	{
+		//1) Вычисляем размер файла
+		std::string buffer;	//В этот буфер будем читать строки из файла
+		int n = 0;	//Количество строк в файле
+		while (!fin.eof())
+		{
+			std::getline(fin, buffer);
+			cout << fin.tellg() << endl;
+			n++;
+		}
+		//2) Выделяем память под массив группу
+		Human** group = new Human*[n] {};
+		//3) Возвращаем курсор в начало файла, для того чтобы заново его прочитать
+		fin.clear();
+		fin.seekg(ios::beg, 0);
+		cout << fin.tellg() << endl;
+		//4) Заново читаем файл, и загружаем его содержимое в массив олбъектов:
+		for (int i = 0; i < n; i++)
+		{
+			std::getline(fin, buffer);
+			cout << buffer << endl;
+		}
+		fin.close();
+	}
+	else
+	{
+		cerr << "Error: File not found!" << endl;
+	}
+	return nullptr;	//Если файл прочитать НЕ удалось, возвращаем указатель на 0
+}

@@ -8,11 +8,20 @@ https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXs
 
 TODO:
 В класс ForwardList добавить методы:
-	void push_back(int Data);
-	void pop_front();
-	void pop_back();
+1. void erase(???);	//Удаление элемента по индексу
+2. Деструктор списка должен очищать список перед удалением;
+3. Оптимизировать процедуры добавления элементов;
+-----------------------------------------------------------
+4. CopyMethods;
+5. MoveMethods;
+
+DONE:
+В класс ForwardList добавить методы:
+	void push_back(int Data);	DONE
+	void pop_front();			DONE
+	void pop_back();			DONE
 	-------------------------------
-	void insert(???);
+	void insert(???);			DONE
 	void erase(???);
 
 //////////////////////////////////////////////////////////////////////////////////

@@ -7,12 +7,22 @@ using std::endl;
 
 #define tab "\t"
 
+//#define DEBUG
+
 class Element
 {
 	int Data;		//Значение элемента
 	Element* pNext;	//Адрес следующего элемента
 	static int count;//Количество элементов
 public:
+	int getData()const
+	{
+		return Data;
+	}
+	Element* get_pNext()const
+	{
+		return pNext;
+	}
 	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		count++;
@@ -24,9 +34,67 @@ public:
 		cout << "EDestructor:\t" << this << endl;
 	}
 	friend class ForwardList;
+	friend class Iterator;
 };
 
 int Element::count = 0;	//Статические переменные могут быть проинициализированы только за классом
+
+/*Element* operator++(Element*& Temp)
+{
+	return Temp = Temp->get_pNext();
+}*/
+
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp = nullptr) :Temp(Temp)
+	{
+#ifdef DEBUG
+		cout << "ItConstructor:\t" << this << endl;
+#endif // DEBUG
+
+	}
+	~Iterator()
+	{
+#ifdef DEBUG
+		cout << "ItDestructor:\t" << this << endl;
+#endif // DEBUG
+
+	}
+
+	//					Operators:
+	Iterator& operator++()	//Prefix increment
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+	Iterator operator++(int)//Suffix increment
+	{
+		Iterator old = *this;
+		Temp = Temp->pNext;
+		return old;
+	}
+
+	const int& operator*()const
+	{
+		return Temp->Data;
+	}
+
+	bool operator==(const Iterator& other)const
+	{
+		return this->Temp == other.Temp;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
+	}
+
+	operator bool()const
+	{
+		return Temp;
+	}
+};
 
 class ForwardList
 {
@@ -34,6 +102,21 @@ class ForwardList
 	//Является точкой входа в список.
 	size_t size;
 public:
+	Element* getHead()const
+	{
+		return Head;
+	}
+
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+
+	//				Constructors
 	ForwardList()
 	{
 		this->Head = nullptr;	//Если Голова указывает на 0, значит список пуст
@@ -156,16 +239,33 @@ public:
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
 			Temp = Temp->pNext;	//Переход на следующий элемент.
 		}*/
-		for(Element* Temp = Head; Temp; Temp=Temp->pNext)
-			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		//for (Element* Temp = Head; Temp; Temp = Temp->pNext)
+		//	cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		for (Iterator Temp = Head; Temp != nullptr; Temp++)
+			cout << *Temp << tab;
+		cout << endl;
 		cout << "Количество элементов в списке: " << size << endl;
 		cout << "Общее количество элементов: " << Head->count << endl;
 	}
 };
 
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList result = left;	//Копируем левый список в результат
+	//for (Element* Temp = right.getHead(); Temp; Temp = Temp->get_pNext())//Проходим по правому списку
+	//	result.push_back(Temp->getData());//и добавляем все его элементы в конец результата
+	for (Iterator Temp = right.getHead(); Temp; Temp++)
+	{
+		result.push_back(*Temp);
+	}
+	return result;
+}
+
 //#define BASE_CHECK
 //#define COUNT_CHECK
 //#define COPY_METHODS_CHECK
+//#define OPERATOR_PLUS_CHECK
+//#define RANGE_BASED_FOR_ARR
 
 void main()
 {
@@ -228,11 +328,50 @@ void main()
 	list2.print();
 #endif // COPY_METHODS_CHECK
 
-	/*int arr[] = { 3,5,8,13,21 };
+#ifdef OPERATOR_PLUS_CHECK
+	int a = 2;
+	int b = 3;
+	int c = a + b;
+
+	ForwardList list1 = { 3,5,8,13,21 };
+	list1.print();
+	ForwardList list2 = { 34,55,89 };
+	list2.print();
+	ForwardList list3 = list1 + list2;
+	list3.print();
+#endif // OPERATOR_PLUS_CHECK
+
+#ifdef RANGE_BASED_FOR_ARR
+	int arr[] = { 3,5,8,13,21 };
 	for (int i = 0; i < sizeof(arr) / sizeof(int); i++)
 		cout << arr[i] << tab;
-	cout << endl;*/
+	cout << endl;
 
-	ForwardList list = { 3,5,8,13,21 };
-	list.print();
+	//Range-based for (foreach):
+	for (int i : arr)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+	/*
+	----------------------------------------
+
+		for(iterator:range)
+		{
+			group-of-statements;
+		}
+		begin()	- возвращает итератор на начало контейнера
+		end()	- возвращает итератор на конец контейнера
+	----------------------------------------
+	*/
+#endif // RANGE_BASED_FOR_ARR
+
+	ForwardList list = { 3, 5, 8, 13, 21 };
+	cout << "\n-------------------------------------------\n";
+	for (int i : list)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+	cout << "\n-------------------------------------------\n";
 }

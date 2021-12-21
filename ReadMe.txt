@@ -7,6 +7,9 @@ https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXs
 //////////////////////////////////////////////////////////////////////////////////
 
 TODO:
+
+
+DONE:
 —оздать ветку ListInheritIterators, и в этой ветке, использу€ наследование оптимизировать итераторы.
 
 TODO:

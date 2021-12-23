@@ -1,6 +1,8 @@
 https://github.com/okovtun/PV_122.git
 https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXsgJC
 
+Book:
+https://drive.google.com/drive/folders/1mIhAKMp5-Jpy6s5X8u924tRCXFEdHE_z?usp=sharing
 
 //////////////////////////////////////////////////////////////////////////////////
 ///////////////////			  DATA CONTAINERS				//////////////////////

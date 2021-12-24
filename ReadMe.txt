@@ -6,6 +6,22 @@ https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXs
 ///////////////////			  DATA CONTAINERS				//////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
+BinaryTree:
+https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees
+https://ru.wikipedia.org/wiki/%D0%94%D0%B2%D0%BE%D0%B8%D1%87%D0%BD%D0%BE%D0%B5_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE
+
+TODO:
+В класс BinaryTree добавить методы:
+	int Count();	//Возвращает количество элементов дерева
+	int Sum();		//Возвращает сумму элементов дерева
+	int Avg();		//Возвращает среднее арифметическое элементов дерева
+	void erase(int Data);	//Удаляет указанное значение из дерева
+	void Clear();	//Полностью очищает дерево, и делает его пустым
+	CopyMethods;
+	MoveMethods;
+
+LISTS:
+
 TODO:
 Создать ветку ListInheritIterators, и в этой ветке, используя наследование оптимизировать итераторы.
 

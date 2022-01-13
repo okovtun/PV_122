@@ -4,7 +4,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-#define tab "\t"
+#define tab "   "
 
 class Tree
 {
@@ -53,6 +53,7 @@ public:
 		cout << "\n-------------------------------------\n";
 	}
 
+
 	void insert(int Data)
 	{
 		insert(Data, this->Root);
@@ -86,12 +87,27 @@ public:
 		Clear(Root);
 		Root = nullptr;
 	}
+
+	int depth()const
+	{
+		return depth(this->Root);
+	}
 	void print()const
 	{
 		print(this->Root);
 		cout << endl;
 	}
+	void print(int depth)const
+	{
+		print(this->Root, depth);
+		cout << endl;
+	}
+	void tree_print()
+	{
+		tree_print(0);
+	}
 private:
+
 	void insert(int Data, Element* Root)
 	{
 		//Root - корень поддерева
@@ -174,12 +190,41 @@ private:
 		delete Root;
 	}
 
+	int depth(Element* Root)const
+	{
+		if (Root == nullptr)return 0;
+		else return
+			depth(Root->pLeft) + 1 > depth(Root->pRight) + 1 ?
+			depth(Root->pLeft) + 1 : depth(Root->pRight) + 1;
+	}
 	void print(Element* Root)const
 	{
 		if (Root == nullptr)return;
 		print(Root->pLeft);
 		cout << Root->Data << tab;
 		print(Root->pRight);
+	}
+	void print(Element* Root, int depth)const
+	{
+		if (Root == nullptr || depth == -1)return;
+		if (depth == 1 && Root->pLeft == nullptr)cout << "  " << tab;
+		print(Root->pLeft, depth - 1);
+		cout << tab;
+
+		if (depth == 0)cout << Root->Data /*<< tab*/;
+
+		if (depth == 1 && Root->pRight == nullptr)cout << "  " << tab;
+		print(Root->pRight, depth - 1);
+		cout << tab;
+	}
+	void tree_print(int depth)
+	{
+		if (depth == this->depth())return;
+		for (int i = 0; i < (this->depth() - depth) * 2; i++)	cout << tab;
+		print(depth);
+		for (int i = 0; i < (this->depth() - depth) * 4; i++)	cout << tab;
+		cout << endl;
+		tree_print(depth + 1);
 	}
 };
 
@@ -247,10 +292,13 @@ void main()
 	u_tree.print();
 #endif // BASE_CHECK
 
-	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 11, 48, 77, 85 };
+	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 18, 48, 77, 85 };
 	tree.print();
 	int value;
-	cout << "Введите удавляемое значение: "; cin >> value;
-	tree.erase(value);
-	tree.print();
+	//cout << "Введите удавляемое значение: "; cin >> value;
+	//tree.erase(value);
+	//tree.print();
+	cout << "Глубина дерева: " << tree.depth() << endl;
+	//tree.print(3);
+	tree.tree_print();
 }

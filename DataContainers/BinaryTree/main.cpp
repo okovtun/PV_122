@@ -1,5 +1,6 @@
 ﻿//Search BinaryTree
 #include<iostream>
+#include<Windows.h>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -97,9 +98,9 @@ public:
 		print(this->Root);
 		cout << endl;
 	}
-	void print(int depth)const
+	void print(int depth, int interval)const
 	{
-		print(this->Root, depth);
+		print(this->Root, depth, interval);
 		cout << endl;
 	}
 	void tree_print()
@@ -204,26 +205,63 @@ private:
 		cout << Root->Data << tab;
 		print(Root->pRight);
 	}
-	void print(Element* Root, int depth)const
+	void print(Element* Root, int depth, int interval)const
 	{
 		if (Root == nullptr || depth == -1)return;
-		if (depth == 1 && Root->pLeft == nullptr)cout << "  " << tab;
-		print(Root->pLeft, depth - 1);
-		cout << tab;
-
-		if (depth == 0)cout << Root->Data /*<< tab*/;
-
-		if (depth == 1 && Root->pRight == nullptr)cout << "  " << tab;
-		print(Root->pRight, depth - 1);
-		cout << tab;
+		//if (depth == 1 && Root->pLeft == nullptr)cout << "  " << tab;
+		//if (depth == 1 && Root->pRight == nullptr)cout << "  " << tab;
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		static CONSOLE_SCREEN_BUFFER_INFO csbi;
+		GetConsoleScreenBufferInfo(hConsole, &csbi);
+		if (depth == 1 && Root->pLeft == nullptr)
+		{
+			csbi.dwCursorPosition.X += interval;
+			SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+		}
+		print(Root->pLeft, depth - 1, interval);
+		//cout << tab;
+		//static int cursor_x = csbi.dwCursorPosition.X;
+		//static int cursor_y = csbi.dwCursorPosition.Y;
+		if (depth == 0)
+		{
+			cout << Root->Data /*<< tab*/;
+			csbi.dwCursorPosition.X += interval;
+			SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+		}
+		//for (int i = 0; i < (this->depth() - depth)*1; i++)cout << tab;
+		int min_distance = 4;
+		//cout.width(min_distance*(this->depth() - depth));
+		//if (depth == 1 && Root->pRight == nullptr)cout << "  " << tab;
+		//for (int i = 0; i < (this->depth() - depth)*1; i++)cout << tab;
+		if (depth == 1 && Root->pRight == nullptr)
+		{
+			csbi.dwCursorPosition.X += interval;
+			SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+		}
+		print(Root->pRight, depth - 1, interval);
+		//cout << tab;
 	}
 	void tree_print(int depth)
 	{
 		if (depth == this->depth())return;
-		for (int i = 0; i < (this->depth() - depth) * 2; i++)	cout << tab;
-		print(depth);
-		for (int i = 0; i < (this->depth() - depth) * 4; i++)	cout << tab;
-		cout << endl;
+		int min_distance = 8;
+		//cout.width(min_distance*(this->depth() - depth));
+		//for (int i = 0; i < (this->depth() - depth) * (this->depth() - depth); i++)	cout << tab;
+
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		CONSOLE_SCREEN_BUFFER_INFO csbi;
+		GetConsoleScreenBufferInfo(hConsole, &csbi);
+		static int start_x = csbi.dwMaximumWindowSize.X / 2;
+		static int start_y = csbi.dwCursorPosition.Y;
+		static COORD position = { start_x, start_y };
+		SetConsoleCursorPosition(hConsole, position);
+		static int interval = start_x*2;
+		print(depth, interval);
+		//for (int i = 0; i < (this->depth() - depth) * (this->depth() - depth); i++)	cout << tab;
+		//cout << endl;
+		position.X /= 2;
+		position.Y+=5;
+		interval /= 2;
 		tree_print(depth + 1);
 	}
 };
@@ -292,7 +330,7 @@ void main()
 	u_tree.print();
 #endif // BASE_CHECK
 
-	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 18, 48, 77, 85 };
+	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 18, 48, 77, 85, 4,11,69 };
 	tree.print();
 	int value;
 	//cout << "Введите удавляемое значение: "; cin >> value;
@@ -301,4 +339,4 @@ void main()
 	cout << "Глубина дерева: " << tree.depth() << endl;
 	//tree.print(3);
 	tree.tree_print();
-}
+	}

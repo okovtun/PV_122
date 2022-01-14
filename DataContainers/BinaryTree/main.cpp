@@ -46,6 +46,17 @@ public:
 	{
 		for (int i : il)insert(i, Root);
 	}
+	Tree(const Tree& other) :Tree()
+	{
+		copy(other.Root);
+		cout << "CopyConstructor:\t" << this << endl;
+	}
+	Tree(Tree&& other)
+	{
+		this->Root = other.Root;
+		other.Root = nullptr;
+		cout << "MoveConstructor:\t" << this << endl;
+	}
 	~Tree()
 	{
 		Clear(Root);
@@ -92,6 +103,13 @@ public:
 	int depth()const
 	{
 		return depth(this->Root);
+	}
+	void copy(Element* Root)
+	{
+		if (Root == nullptr) return;
+		insert(Root->Data, this->Root);
+		copy(Root->pLeft);
+		copy(Root->pRight);
 	}
 	void print()const
 	{
@@ -198,6 +216,9 @@ private:
 			depth(Root->pLeft) + 1 > depth(Root->pRight) + 1 ?
 			depth(Root->pLeft) + 1 : depth(Root->pRight) + 1;
 	}
+
+	
+
 	void print(Element* Root)const
 	{
 		if (Root == nullptr)return;
@@ -207,12 +228,17 @@ private:
 	}
 	void print(Element* Root, int depth, int interval)const
 	{
-		if (Root == nullptr || depth == -1)return;
-		//if (depth == 1 && Root->pLeft == nullptr)cout << "  " << tab;
-		//if (depth == 1 && Root->pRight == nullptr)cout << "  " << tab;
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		static CONSOLE_SCREEN_BUFFER_INFO csbi;
 		GetConsoleScreenBufferInfo(hConsole, &csbi);
+		if (Root == nullptr || depth == -1)return;
+		/*{
+			csbi.dwCursorPosition.X += interval;
+			SetConsoleCursorPosition(hConsole, csbi.dwCursorPosition);
+			return;
+		}*/
+		//if (depth == 1 && Root->pLeft == nullptr)cout << "  " << tab;
+		//if (depth == 1 && Root->pRight == nullptr)cout << "  " << tab;
 		if (depth == 1 && Root->pLeft == nullptr)
 		{
 			csbi.dwCursorPosition.X += interval;
@@ -255,16 +281,23 @@ private:
 		static int start_y = csbi.dwCursorPosition.Y;
 		static COORD position = { start_x, start_y };
 		SetConsoleCursorPosition(hConsole, position);
-		static int interval = start_x*2;
+		static int interval = start_x * 2;
 		print(depth, interval);
 		//for (int i = 0; i < (this->depth() - depth) * (this->depth() - depth); i++)	cout << tab;
 		//cout << endl;
 		position.X /= 2;
-		position.Y+=5;
+		position.Y += 5;
 		interval /= 2;
 		tree_print(depth + 1);
 	}
 };
+
+Tree operator+(const Tree& left, const Tree& right)
+{
+	Tree res = left;
+	res.copy(right.getRoot());
+	return res;
+}
 
 class UniqueTree : public Tree
 {
@@ -294,9 +327,13 @@ public:
 };
 
 //#define BASE_CHECK
+//#define MOVE_SEMANTIC
 
 void main()
 {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD buffer = { 150,44 };
+	SetConsoleDisplayMode(hConsole, CONSOLE_FULLSCREEN_MODE, &buffer);
 	setlocale(LC_ALL, "");
 #ifdef BASE_CHECK
 	int n;
@@ -330,7 +367,7 @@ void main()
 	u_tree.print();
 #endif // BASE_CHECK
 
-	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 18, 48, 77, 85, 4,11,69 };
+	Tree tree = { 50, 25, 75, 16, 32, 64, 80, 8, 18, 48, 77, 85/*, 4,11,69,87,44 ,17,19*/ };
 	tree.print();
 	int value;
 	//cout << "Введите удавляемое значение: "; cin >> value;
@@ -339,4 +376,14 @@ void main()
 	cout << "Глубина дерева: " << tree.depth() << endl;
 	//tree.print(3);
 	tree.tree_print();
-	}
+
+#ifdef MOVE_SEMANTIC
+	Tree oak = { 67, 34, 88, 22, 53 };
+	oak.print();
+	cout << "\n========================================================================\n";
+	Tree res = tree + oak;
+	cout << "\n========================================================================\n";
+	res.print();
+#endif // MOVE_SEMANTIC
+
+}

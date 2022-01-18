@@ -9,6 +9,10 @@ https://www.youtube.com/watch?v=EDLjvLMibQI&list=PLeqyOOqxeiIO13nhWod9y7jd98OmXs
 http://cplusplus.com/reference/stl/
 
 TODO:
+—оздать список (std::list), проинициализировать его числами ‘ибоначчи, 
+вставить в этот список значение по индексу, затем удалить значение по индексу.
+
+DONE:
 1. »спользу€ метод insert() http://cplusplus.com/reference/vector/vector/insert/
    вставить значение в вектор по указанному индексу;
 2. »спользу€ метод erase() http://cplusplus.com/reference/vector/vector/erase/

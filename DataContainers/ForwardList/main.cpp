@@ -98,6 +98,7 @@ public:
 
 class ForwardList
 {
+protected:
 	Element* Head;	//Указывает на начальный элемен списка. 
 	//Является точкой входа в список.
 	size_t size;
@@ -261,11 +262,33 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 	return result;
 }
 
+class Stack :private ForwardList
+{
+public:
+	void push(int Data)
+	{
+		ForwardList::push_front(Data);
+	}
+	void pop()
+	{
+		ForwardList::pop_front();
+	}
+	int top()const
+	{
+		return getHead()->getData();
+	}
+	int size()const
+	{
+		return ForwardList::size;
+	}
+};
+
 //#define BASE_CHECK
 //#define COUNT_CHECK
 //#define COPY_METHODS_CHECK
 //#define OPERATOR_PLUS_CHECK
 //#define RANGE_BASED_FOR_ARR
+//#define RANGE_BASED_FOR_LIST
 
 void main()
 {
@@ -366,6 +389,7 @@ void main()
 	*/
 #endif // RANGE_BASED_FOR_ARR
 
+#ifdef RANGE_BASED_FOR_LIST
 	ForwardList list = { 3, 5, 8, 13, 21 };
 	cout << "\n-------------------------------------------\n";
 	for (int i : list)
@@ -374,4 +398,10 @@ void main()
 	}
 	cout << endl;
 	cout << "\n-------------------------------------------\n";
+#endif // RANGE_BASED_FOR_LIST
+
+	Stack stack;
+	stack.push(123);
+	cout << sizeof(ForwardList) << endl;
+	cout << sizeof(Stack) << endl;
 }

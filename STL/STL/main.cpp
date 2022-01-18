@@ -1,16 +1,21 @@
 ﻿#include<iostream>
 #include<array>
 #include<vector>
-using namespace std;
+#include<deque>
+//using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define tab "\t"
 
 //#define STL_ARRAY
-#define STL_VECTOR
+//#define STL_VECTOR
+//#define STL_DEQUE
 
-template<typename T>void print(const vector<T>& vec)
+template<typename T>void print(const std::vector<T>& vec)
 {
-	for (typename vector<T>::const_iterator it = vec.begin(); it != vec.end(); it++)
+	for (typename std::vector<T>::const_iterator it = vec.begin(); it != vec.end(); it++)
 	{
 		cout << *it << tab;
 	}
@@ -99,5 +104,35 @@ void main()
 	print(vec);
 	print(powers);
 #endif // STL_VECTOR
+
+#ifdef STL_DEQUE
+	//deque (Double-ended queue - Двунаправленная очередь) - это контейнер,
+	//который хранит данные в виде списка динамических массивов (векторов),
+	//что увеличивает производительность при добавлении/удалении элементов,
+	//но немного снижает производительность при доступе к элементам.
+	//В отличие от Вектора, deque позволяет добавлять/удалять элементы
+	//не только с конца, но и с начала очереди.
+
+	std::deque<int> deque = { 3,5,8,13,21 };
+	deque.push_back(34);
+	deque.push_back(55);
+	deque.push_back(89);
+
+	deque.push_front(2);
+	deque.push_front(1);
+	deque.push_front(1);
+	deque.push_front(0);
+	for (int i = 0; i < deque.size(); i++)
+	{
+		cout << deque[i] << tab;
+	}
+	cout << endl;
+
+	std::deque<int> d_powers = { 256, 512, 768 };
+	//deque.push_back(std::move(d_powers.begin() + 1));
+	for (int i : deque)cout << i << tab; cout << endl;
+	for (int i : d_powers)cout << i << tab; cout << endl;
+
+#endif // STL_DEQUE
 
 }

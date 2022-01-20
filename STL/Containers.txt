@@ -1,6 +1,13 @@
 STL - Standard Template Library
 Sequence	containers: array, vector, deque, list, forward_list;
 Associative containers: map, set, multimap, multiset;
+						pair<key,value>
+						
 Container adaptors:		stack, queue (очередь), priority_queue (очередь с приоритетами);
 Unordered associative containers: unordered_map, unordered_set, unordered_multimap, unordered_multiset;
 http://cplusplus.com/reference/stl/
+
+map
+pair<key, value>
+first - key
+last  - value

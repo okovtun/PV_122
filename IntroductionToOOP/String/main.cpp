@@ -158,16 +158,19 @@ void main()
 	str1 = str1;
 	cout << str1 << endl;*/
 
-	String str1 = "Hello";
+	/*String str1 = "Hello";
 	String str2 = "World";
 	cout << delimiter << endl;
 	String str3 = str1 + str2;
 	cout << delimiter << endl;
-	cout << str3 << endl;
+	cout << str3 << endl;*/
 	/*cout << delimiter << endl;
 	str1 += str2;
 	cout << delimiter << endl;
 	cout << str1 << endl;*/
+
+	String str4{};
+	str4.print();
 
 	//Move-методы (Move-semantic) С++ 11
 	//Move-constructor (Конструктор переноса)

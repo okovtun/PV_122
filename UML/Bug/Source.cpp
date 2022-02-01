@@ -1,14 +1,15 @@
-﻿#include<iostream>
+#include <iostream>
 #include<conio.h>
 #include<Windows.h>
 #include<chrono>
 #include<thread>
+#include<iomanip>
 using namespace std;
 
 #define MIN_TANK_VOLUME 40
 #define MAX_TANK_VOLUME 80
-#define MIN_ENGINE_CONSUMPTION	4
-#define MAX_ENGINE_CONSUMPTION	25
+#define MIN_ENGINE_CONSUMPTION 4
+#define MAX_ENGINE_CONSUMPTION 25
 
 class Tank
 {
@@ -27,7 +28,8 @@ public:
 	{
 		if (fuel_level + fuel < 0)return fuel_level = 0;
 		if (fuel_level + fuel > VOLUME)return fuel_level = VOLUME;
-		//if (fuel_level + fuel >= 0 && fuel_level + fuel <= VOLUME)fuel_level += fuel;
+		//if (fuel_level+fuel>= 0&& fuel_level + fuel <= VOLUME)fuel_level += fuel;
+		//return fuel_level;
 		else return fuel_level += fuel;
 	}
 	double give_fuel(double fuel)
@@ -41,16 +43,16 @@ public:
 		fuel_level(0)
 	{
 		//this->VOLUME = volume;
-		cout << "Tank is ready\t" << this << endl;
+		cout << "Tank is ready \t" << this << endl;
 	}
 	~Tank()
 	{
-		cout << "Tank is gone\t" << this << endl;
+		cout << "Tank is gone \t" << this << endl;
 	}
 	void info()const
 	{
-		cout << "Tank volume:\t" << VOLUME << endl;
-		cout << "Fuel level:\t" << fuel_level << endl;
+		cout << "Tank volume: \t" << VOLUME << endl;
+		cout << "Fuel level: \t" << fuel_level << endl;
 	}
 };
 
@@ -68,7 +70,7 @@ public:
 	{
 		return consumption_per_second;
 	}
-	bool started()const
+	bool started()
 	{
 		return is_started;
 	}
@@ -80,55 +82,55 @@ public:
 	{
 		return is_started = false;
 	}
-	void set_consumtion(double consumption)
+	void set_consumption(double consumption)
 	{
 		if (consumption >= MIN_ENGINE_CONSUMPTION && consumption <= MAX_ENGINE_CONSUMPTION)
 			this->consumption = consumption;
 		else
 			this->consumption = MAX_ENGINE_CONSUMPTION / 2;
-		consumption_per_second = this->consumption * .3e-4;
+		consumption_per_second = consumption * .3e-4;
 	}
 	explicit Engine(double consumption)
 	{
-		set_consumtion(consumption);
+		set_consumption(consumption);
 		is_started = false;
-		cout << "Engine is ready:\t" << this << endl;
+		cout << "Engine is reade: \t" << this << endl;
 	}
 	~Engine()
 	{
-		cout << "Engine is gone:\t" << this << endl;
+		cout << "Engine is done:\t" << this << endl;
 	}
 	void info()const
 	{
-		cout << "Consumption:\t" << consumption << endl;
-		cout << "Consumption per sec:\t" << consumption_per_second << endl;
-		cout << "Engine is " << (is_started ? "started" : "stopped") << endl;
+		cout << "Consumption: \t" << consumption << endl;
+		cout << "Consumption per sec: \t" << consumption_per_second << endl;
+		cout << "Engine is: \t" << (is_started ? "started " : "stoped ") << endl;
 	}
 };
 
-#define Enter	13
-#define Escape	27
+#define Enter 13
+#define Escape 27
 
 class Car
 {
 	Tank tank;
 	Engine engine;
 	bool driver_inside;
-	struct Control
+	struct control
 	{
-		std::thread panel_thread;			//Отображение панели приборов
-		std::thread engine_idle_thread;		//Холостой ход двигателя
-		std::thread free_wheeling_thread;	//Движение машины по инерции
+		std::thread panel_thread;
+		std::thread engone_idle_thread;
+		std::thread free_eheeling_thread;
 	}control;
 public:
 	Car(double engine_consumption, unsigned int tank_volume) :engine(engine_consumption), tank(tank_volume)
 	{
-		driver_inside = false;//Когда машина сходит с конвеера, в ней нет водителя
-		cout << "Your car is ready to go\t" << this << endl;
+		driver_inside = false;
+		cout << "Your car is ready to go \t" << this << endl;
 	}
 	~Car()
 	{
-		cout << "Your car is over" << endl;
+		cout << "Your car is over " << endl;
 	}
 
 	void fill(double fuel)
@@ -137,25 +139,25 @@ public:
 	}
 	void start_engine()
 	{
-		if (tank.get_fuel_level())engine.start();
-		control.engine_idle_thread = std::thread(&Car::engine_idle, this);
+		if (tank.get_fuel_level()) engine.start();
+		control.engone_idle_thread = std::thread(&Car::engine_idle, this);
 	}
 	void stop_engine()
 	{
 		engine.stop();
-		control.engine_idle_thread.join();
+		control.engone_idle_thread.join();
 	}
 	void get_in()
 	{
 		driver_inside = true;
-		control.panel_thread = std::thread(&Car::control_panel, this);	//Запускаем метод control_panel в отдельном потоке
+		control.panel_thread = std::thread(&Car::control_panel, this);
 	}
 	void get_out()
 	{
 		driver_inside = false;
-		control.panel_thread.join();	//Останавливаем выполнение потока panel_thread.
+		control.panel_thread.join();
 		system("CLS");
-		cout << "You are out of your car" << endl;
+		cout << "You are out of car";
 	}
 
 	void control_car()
@@ -166,33 +168,30 @@ public:
 			key = _getch();
 			switch (key)
 			{
-			case Enter://Сесть в машину. Нужно отобразить панель приборов
+			case 13://����� � ������, ����� ���������� ������ ��������
 				if (driver_inside)get_out();
 				else get_in();
 				break;
-			case 'F':case 'f'://Заправить машину
+			case'F' || 'f': case 'f':
 				double fuel;
-				cout << "Введите объем топлива: "; cin >> fuel;
+				cout << "������� ����� �������: "; cin >> fuel;
 				fill(fuel);
 				break;
-			case 'I':case 'i'://Ignition - зажигание
+			case'I':case'i'://���������
 				if (engine.started())stop_engine();
 				else start_engine();
 				break;
+				// control_panel();
 			case Escape:
 				if (control.panel_thread.joinable())get_out();
 				break;
 			}
-
 		} while (key != 27);
 	}
 
 	void engine_idle()
 	{
-		while (
-			engine.started() &&
-			tank.give_fuel(engine.get_consumption_per_second())
-			)
+		while (engine.started() && tank.give_fuel(engine.get_consumption_per_second()))
 			std::this_thread::sleep_for(1s);
 	}
 
@@ -201,8 +200,8 @@ public:
 		while (driver_inside)
 		{
 			system("CLS");
-			cout << "Fuel level: " << tank.get_fuel_level() << " liters.\n";
-			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
+			cout << "Fuel level: " << std::setprecision(4) << fixed << tank.get_fuel_level() << " Liters. \n";
+			cout << "Engine is " << (engine.started() ? "started " : "stoped ") << endl;
 			std::this_thread::sleep_for(1s);
 		}
 	}
@@ -226,11 +225,11 @@ void main()
 	int fuel;
 	while (true)
 	{
-		cout << "Введите объем:"; cin >> fuel;
+		cout << "������� �����: "; cin >> fuel;
 		tank.fill(fuel);
 		tank.info();
 	}
-#endif // DEBUG
+#endif // TANK_CHECK
 
 #ifdef ENGINE_CHECK
 	Engine engine(9);
@@ -238,6 +237,6 @@ void main()
 #endif // ENGINE_CHECK
 
 	Car bmw(0, 80);
-	cout << "Press Enter to get in" << endl;
+	cout << "Press Enter to get in " << endl;
 	bmw.control_car();
 }

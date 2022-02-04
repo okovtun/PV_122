@@ -56,6 +56,7 @@ public:
 
 class Engine
 {
+	double default_consumption;
 	double consumption;
 	double consumption_per_second;
 	bool is_started;
@@ -80,7 +81,7 @@ public:
 	{
 		return is_started = false;
 	}
-	void set_consumtion(double consumption)
+	void set_consumption(double consumption)
 	{
 		if (consumption >= MIN_ENGINE_CONSUMPTION && consumption <= MAX_ENGINE_CONSUMPTION)
 			this->consumption = consumption;
@@ -90,13 +91,24 @@ public:
 	}
 	explicit Engine(double consumption)
 	{
-		set_consumtion(consumption);
+		set_consumption(consumption);
+		default_consumption = this->consumption;
 		is_started = false;
 		cout << "Engine is ready:\t" << this << endl;
 	}
 	~Engine()
 	{
 		cout << "Engine is gone:\t" << this << endl;
+	}
+	double set_consumption_by_speed(int speed)
+	{
+		set_consumption(get_consumption());
+		if (speed > 0 && speed <= 60)consumption_per_second *= 6.6;
+		else if (speed > 60 && speed <= 100)consumption_per_second *= 4.6;
+		else if (speed > 100 && speed <= 140)consumption_per_second *= 6.6;
+		else if (speed > 140 && speed <= 200)consumption_per_second *= 8.3;
+		else if (speed > 200 && speed <= 300)consumption_per_second *= 8.3;
+		return consumption_per_second;
 	}
 	void info()const
 	{
@@ -219,6 +231,7 @@ public:
 				break;
 			}
 			if (speed == 0 && control.free_wheeling_thread.joinable())control.free_wheeling_thread.join();
+			engine.set_consumption_by_speed(speed);
 		} while (key != 27);
 	}
 
@@ -237,6 +250,7 @@ public:
 		{
 			speed--;
 			if (speed < 0)speed = 0;
+			//engine.set_consumption_by_speed(speed);
 			std::this_thread::sleep_for(1s);
 		}
 	}
@@ -257,7 +271,6 @@ public:
 			}
 			cout << endl;
 			cout << "Fuel level: " << tank.get_fuel_level() << " liters.";
-			cout << "Consuption: " << engine.get_consumption_per_second() << " liters.";
 			if (tank.get_fuel_level() < 5)
 			{
 				HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -266,6 +279,7 @@ public:
 				SetConsoleTextAttribute(hConsole, 0x07);
 			}
 			cout << endl;
+			cout << "Consuption: " << engine.get_consumption_per_second() << " liters.";
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			cout << "Speed: " << speed << " km/h.\n";
 			std::this_thread::sleep_for(1s);
@@ -276,8 +290,8 @@ public:
 	{
 		tank.info();
 		engine.info();
-			}
-		};
+	}
+};
 
 //#define TANK_CHECK
 //#define ENGINE_CHECK
